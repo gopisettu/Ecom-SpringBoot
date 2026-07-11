@@ -2,6 +2,7 @@ package com.springboot.ecom.controller;
 
 import com.springboot.ecom.dto.CustomeResDto;
 import com.springboot.ecom.dto.CustomerDto;
+import com.springboot.ecom.dto.CustomerUpdateDto;
 import com.springboot.ecom.model.Customer;
 import com.springboot.ecom.service.CustomerService;
 import jakarta.validation.Valid;
@@ -54,9 +55,8 @@ public class CustomerController {
     }
 
     @GetMapping("/get-oneById/{id}")
-    public Customer getAllById(@PathVariable long id){
+    public  Customer getAllById(@PathVariable long id){
         return customerService.getAllById(id);
-
     }
 
         @DeleteMapping("/delete-byId/{id}")
@@ -64,10 +64,13 @@ public class CustomerController {
          customerService.delete(id);
 
     }
-//    @PutMapping
-//    public  void update(){
-//
-//    }
+    @PutMapping("/update-ById/{id}")
+    public Customer update(@PathVariable long id,  @Valid @RequestBody CustomerUpdateDto customerUpdateDto){
+         return customerService.update(id,customerUpdateDto);
+    }
 
-
+@GetMapping("/fetch-allByID/{id}")
+    public  CustomeResDto fetchById(@PathVariable long id){
+        return  customerService.fetchById(id);
+}
 }

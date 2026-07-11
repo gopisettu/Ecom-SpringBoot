@@ -2,15 +2,18 @@ package com.springboot.ecom.service;
 
 import com.springboot.ecom.dto.CustomeResDto;
 import com.springboot.ecom.dto.CustomerDto;
+import com.springboot.ecom.dto.CustomerUpdateDto;
 import com.springboot.ecom.exception.ResourseNotFoundException;
 import com.springboot.ecom.mapper.CustomerMapper;
 import com.springboot.ecom.model.Customer;
 import com.springboot.ecom.repository.CustomerRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +32,9 @@ public class CustomerService {
     public List<CustomeResDto> getAll(int page,int size) {
 
        Pageable pageable= PageRequest.of(page,size);
-        List<Customer> customer=customerRepository.findAll(pageable).getContent();
+//        List<Customer> customer=customerRepository.findAll(pageable).getContent();
+
+        List<Customer>customer=customerRepository.fetchAll(pageable).getContent();
 return  customer.stream()
         .map((c)->customerMapper.mapEntityToDto(c))
         .toList();
@@ -62,4 +67,20 @@ return  customer.stream()
         customerRepository.save(customer);
     }
 
+    public Customer update(long id, @Valid CustomerUpdateDto customerUpdateDto) {
+       Customer customerDB= customerRepository.findById(id)
+                .orElseThrow(()->new ResourseNotFoundException("Customer Id not found"));
+       customerDB.setCity(customerUpdateDto.city());
+       return  customerRepository.save(customerDB);
+    }
+
+    public CustomeResDto fetchById(long id) {
+        Customer customer=customerRepository.fetchById(id)
+                .orElseThrow(()->new ResourseNotFoundException("Customer Id not found"));
+        if(customer == null)
+            System.out.println("Customer Id Not found");
+
+        return customerMapper.mapEntityToDto(customer);
+
+    }
 }

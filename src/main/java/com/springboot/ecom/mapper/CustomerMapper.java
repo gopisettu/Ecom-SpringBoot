@@ -18,6 +18,5 @@ public class CustomerMapper {
         CustomeResDto customeResDto=new CustomeResDto(customer.getName(),customer.getCity());
         return customeResDto;
 
-
     }
 }
