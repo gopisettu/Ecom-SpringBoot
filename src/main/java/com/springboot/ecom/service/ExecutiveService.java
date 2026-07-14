@@ -3,10 +3,13 @@ package com.springboot.ecom.service;
 import com.springboot.ecom.dto.Executive.ExecutiveUserDto;
 import com.springboot.ecom.enums.JobTitle;
 import com.springboot.ecom.enums.Role;
+import com.springboot.ecom.mapper.ExecutiveMapper;
+import com.springboot.ecom.mapper.UserMapper;
 import com.springboot.ecom.model.Executive;
 import com.springboot.ecom.model.User;
 import com.springboot.ecom.repository.ExecutiveRepository;
 import com.springboot.ecom.repository.UserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -42,5 +45,13 @@ user.setRole(role);
         executive=executiveRepository.save(executive);
 
 
+    }
+
+    public void insertProf( ExecutiveUserDto executiveUserDto) {
+        User user= UserMapper.mapUserDtoToEntity(executiveUserDto.username(),executiveUserDto.password(),Role.EXECUTIVE);
+        user=userRepository.save(user);
+        Executive executive=ExecutiveMapper.mapDtoToEntiry(executiveUserDto.jobTitle(),executiveUserDto.name());
+        executive.setUser(user);
+        executiveRepository.save(executive);
     }
 }
