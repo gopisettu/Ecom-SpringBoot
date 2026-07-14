@@ -18,16 +18,17 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class SellerService {
-    private  final ExecutiveRepository executiveRepository;
-    private  final SellerRepository sellerRepository;
-    private  final UserRepository userRepository;
-    public void addSellerByExecutive(long executiveId, SellerDto sellerDto) {
-        Seller seller= SellerMapper.mapSellerDtoToEntity(sellerDto);
+    private final ExecutiveRepository executiveRepository;
+    private final SellerRepository sellerRepository;
+    private final UserRepository userRepository;
 
-        User user= UserMapper.mapUserDtoToEntity(sellerDto.username(),sellerDto.password(), Role.SELLER);
-        user=userRepository.save(user);
-        Executive executive= executiveRepository.findById(executiveId)
-                .orElseThrow(()-> new ResourseNotFoundException("Executive Id not found"));
+    public void addSellerByExecutive(long executiveId, SellerDto sellerDto) {
+        Seller seller = SellerMapper.mapSellerDtoToEntity(sellerDto);
+
+        User user = UserMapper.mapUserDtoToEntity(sellerDto.username(), sellerDto.password(), Role.SELLER);
+        user = userRepository.save(user);
+        Executive executive = executiveRepository.findById(executiveId)
+                .orElseThrow(() -> new ResourseNotFoundException("Executive Id not found"));
         seller.setUser(user);
         seller.setExcecutive(executive);
         sellerRepository.save(seller);
