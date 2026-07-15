@@ -3,6 +3,7 @@ package com.springboot.ecom.controller;
 import com.springboot.ecom.dto.CustomeResDto;
 import com.springboot.ecom.dto.CustomerDto;
 import com.springboot.ecom.dto.CustomerUpdateDto;
+import com.springboot.ecom.dto.response.Product.OrderDto;
 import com.springboot.ecom.model.Customer;
 import com.springboot.ecom.service.CustomerService;
 import jakarta.validation.Valid;
@@ -73,4 +74,15 @@ public class CustomerController {
     public  CustomeResDto fetchById(@PathVariable long id){
         return  customerService.fetchById(id);
 }
+
+
+    @GetMapping("/purchase/by-customer")
+    public List<OrderDto>getProductsPurchasedByCustomer(@RequestParam String customerUsername,
+                                                        @RequestParam(required = false,defaultValue = "0") int page,
+                                                        @RequestParam(required = false,defaultValue = "20") int size){
+        return customerService.getProductsPurchasedByCustomer(customerUsername,page,size);
+    }
+
 }
+
+

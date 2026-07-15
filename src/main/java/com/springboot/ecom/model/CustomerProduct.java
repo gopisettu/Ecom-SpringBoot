@@ -21,6 +21,7 @@ public class CustomerProduct {
      private long id;
     @CreationTimestamp
       private Instant purchaseDate;
+    private Instant deliveredDate;
 
       private  int quantity;
       private double discount;

@@ -3,6 +3,7 @@ package com.springboot.ecom.service;
 import com.springboot.ecom.dto.CustomeResDto;
 import com.springboot.ecom.dto.CustomerDto;
 import com.springboot.ecom.dto.CustomerUpdateDto;
+import com.springboot.ecom.dto.response.Product.OrderDto;
 import com.springboot.ecom.exception.ResourseNotFoundException;
 import com.springboot.ecom.mapper.CustomerMapper;
 import com.springboot.ecom.model.Customer;
@@ -82,5 +83,10 @@ return  customer.stream()
 
         return customerMapper.mapEntityToDto(customer);
 
+    }
+
+    public List<OrderDto> getProductsPurchasedByCustomer(String customerUsername,int page,int size) {
+        Pageable pageable=PageRequest.of(page,size);
+        return  customerRepository.getProductsPurchasedByCustomer(customerUsername,pageable);
     }
 }
