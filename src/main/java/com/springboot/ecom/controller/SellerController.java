@@ -7,6 +7,8 @@ import jakarta.persistence.PostRemove;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/seller")
@@ -30,7 +32,8 @@ public class SellerController {
         sellerService.addSellerByExecutive(executiveId,sellerDto);
     }
     @DeleteMapping("/de-activateSeller")
-    public void deActivateSeller(@RequestParam String username){
+    public void deActivateSeller(Principal principal){
+        String username= principal.getName();
         sellerService.deActivateSeller(username);
     }
 }

@@ -7,7 +7,9 @@ import com.springboot.ecom.dto.response.Product.OrderDto;
 import com.springboot.ecom.exception.ResourseNotFoundException;
 import com.springboot.ecom.mapper.CustomerMapper;
 import com.springboot.ecom.model.Customer;
+import com.springboot.ecom.model.User;
 import com.springboot.ecom.repository.CustomerRepository;
+import com.springboot.ecom.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -23,10 +25,17 @@ import java.util.Optional;
 public class CustomerService {
     private final CustomerRepository customerRepository;
     private  final CustomerMapper customerMapper;
+    private final UserRepository userRepository;
 
 
     public Customer add(CustomerDto dto) {
+        User user=new User();
+        user.setUsername(dto.username());
+user.setPassword(dto.password());
+userRepository.save(user);
+
         Customer customer=customerMapper.getMapCustomerDto(dto);
+        customer.setUser(user);
         return  customerRepository.save(customer);
     }
 
