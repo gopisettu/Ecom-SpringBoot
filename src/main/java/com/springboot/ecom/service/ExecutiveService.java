@@ -11,6 +11,7 @@ import com.springboot.ecom.model.User;
 import com.springboot.ecom.repository.ExecutiveRepository;
 import com.springboot.ecom.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public class ExecutiveService {
 
     private final ExecutiveRepository executiveRepository;
     private  final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
     public void insert(ExecutiveUserDto executiveUserDto) {
         //1. get user details from the Request body
 
@@ -29,14 +32,15 @@ public class ExecutiveService {
         Role role=Role.EXECUTIVE;
 
 // 2.insert into  new user and save it in Db and get back the saved user inorder to add it to executive
-User user=new User();
-user.setUsername(username);
-user.setPassword(password);
-user.setRole(role);
+        User user=new User();
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setRole(role);
+        user.setActive(true);
 
-  user=userRepository.save(user);
+        user=userRepository.save(user);
 
-// 3.fetch executive details from request body and save it into new Executive\
+// 3.fetch executive details from request body and save it into new Executive
         String name=executiveUserDto.name();
         JobTitle jobTitle=executiveUserDto.jobTitle();
         Executive executive=new Executive();
@@ -45,12 +49,13 @@ user.setRole(role);
 //4.attach user obj to executive and save it
         executive.setUser(user);
         executive=executiveRepository.save(executive);
-
-
     }
 
     public void insertProf( ExecutiveUserDto executiveUserDto) {
-        User user= UserMapper.mapUserDtoToEntity(executiveUserDto.username(),executiveUserDto.password(),Role.EXECUTIVE);
+        User user= UserMapper.mapUserDtoToEntity(
+                executiveUserDto.username(),
+                passwordEncoder.encode(executiveUserDto.password()),
+                Role.EXECUTIVE);
         user=userRepository.save(user);
         Executive executive=ExecutiveMapper.mapDtoToEntiry(executiveUserDto.jobTitle(),executiveUserDto.name());
         executive.setUser(user);

@@ -11,4 +11,9 @@ public interface UserRepository extends JpaRepository<User,Long> {
            Select u from User u where u.username=?1  AND u.role="SELLER"
             """)
     Optional<User> getSellerByUserName(String username);
+@Query
+        ("""
+   select u from User u where u.username = ?1 AND u.isActive= true
+""")
+    Optional<User> loadUserByUsername(String username);
 }

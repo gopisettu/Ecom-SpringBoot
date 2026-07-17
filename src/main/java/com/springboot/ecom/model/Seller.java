@@ -16,6 +16,7 @@ public class Seller {
     private  String name;
     private String contact;
     private String city;
+
     @OneToOne
     @JoinColumn(name="user_id")
     private User user;

@@ -1,44 +1,71 @@
 package com.springboot.ecom.config;
 
+import com.springboot.ecom.service.MyUserAuthenticationService;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@AllArgsConstructor
 public class SpringSecurityConfig {
-    @Bean
-    public UserDetailsService users() {
+    private final MyUserAuthenticationService myUserAuthenticationService;
 
-        UserDetails admin1 = User.builder()
-                .username("admin1")
-                .password("{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW")
-                .roles("USER")
-                .build();
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password("{noop}admin@123")
-                .roles("ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(admin,admin1);
-    }
-@Bean
+    @Bean
     public SecurityFilterChain securedFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf((c)->c.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/executive/insert/executiveUser").hasRole("ADMIN")
-                        .requestMatchers("/secured/admin").hasRole("ADMIN")
+//                        Public read-only product catalog
+                                .requestMatchers(HttpMethod.GET, "/api/product/get-category/pageable/{categoryId}").hasAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/api/product/getProdutCountBySeller/{sellerId}").hasAuthority("SELLER")
+                                .requestMatchers(HttpMethod.GET, "/api/product/get-ByTitle").permitAll()
 
-                        .anyRequest().authenticated()
+//                        Public self-registration
+                                .requestMatchers(HttpMethod.POST, "/api/customer/add").hasAuthority("ADMIN")
+
+//                                .requestMatchers(HttpMethod.POST, "/api/admin/add").permitAll()
+
+//                        Admin/Executive account & seller management
+                                .requestMatchers(HttpMethod.POST, "/api/executive/insert/executiveUser").hasAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/api/executive/insert/executiveUser/prof").hasAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/api/executive/get-ByJobTitle").hasAnyAuthority("ADMIN", "EXECUTIVE")
+                                .requestMatchers(HttpMethod.POST, "/api/seller/insertSellerByExecutive").hasAnyAuthority("ADMIN", "EXECUTIVE")
+                                .requestMatchers(HttpMethod.DELETE, "/api/seller/de-activateSeller").hasAnyAuthority("ADMIN", "EXECUTIVE", "SELLER")
+
+//                        Product writes
+                                .requestMatchers(HttpMethod.POST, "/api/product/add/{sellerId}/{categoryId}").hasAnyAuthority("ADMIN", "EXECUTIVE", "SELLER")
+
+//                        Customer management (self-service + staff)
+                                .requestMatchers(HttpMethod.GET, "/api/customer/purchase/by-customer").permitAll()
+                                .requestMatchers("/api/customer/**").hasAnyAuthority("ADMIN", "EXECUTIVE")
+
+//
+                                .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider dao=new DaoAuthenticationProvider(myUserAuthenticationService);
+        dao.setPasswordEncoder(passwordEncoder());
+        return dao;
     }
 }

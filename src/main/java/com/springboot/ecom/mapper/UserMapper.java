@@ -11,6 +11,7 @@ public class UserMapper {
         user.setRole(role);
         user.setUsername(username);
         user.setPassword(password);
+        user.setActive(true);
         return user;
     }
 }

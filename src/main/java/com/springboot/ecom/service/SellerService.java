@@ -11,6 +11,7 @@ import com.springboot.ecom.model.Seller;
 import com.springboot.ecom.model.User;
 import com.springboot.ecom.repository.*;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,13 +23,14 @@ public class SellerService {
     private final SellerRepository sellerRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public void addSellerByExecutive(long executiveId, SellerDto sellerDto) {
+    public void addSellerByExecutive(String executiveName, SellerDto sellerDto) {
         Seller seller = SellerMapper.mapSellerDtoToEntity(sellerDto);
-
-        User user = UserMapper.mapUserDtoToEntity(sellerDto.username(), sellerDto.password(), Role.SELLER);
+//Encoding Password
+        User user = UserMapper.mapUserDtoToEntity(sellerDto.username(), passwordEncoder.encode(sellerDto.password()), Role.SELLER);
         user = userRepository.save(user);
-        Executive executive = executiveRepository.findById(executiveId)
+        Executive executive = executiveRepository.findByUserUsername(executiveName)
                 .orElseThrow(() -> new ResourseNotFoundException("Executive Id not found"));
         seller.setUser(user);
         seller.setExcecutive(executive);

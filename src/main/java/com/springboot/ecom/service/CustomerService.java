@@ -4,6 +4,7 @@ import com.springboot.ecom.dto.CustomeResDto;
 import com.springboot.ecom.dto.CustomerDto;
 import com.springboot.ecom.dto.CustomerUpdateDto;
 import com.springboot.ecom.dto.response.Product.OrderDto;
+import com.springboot.ecom.enums.Role;
 import com.springboot.ecom.exception.ResourseNotFoundException;
 import com.springboot.ecom.mapper.CustomerMapper;
 import com.springboot.ecom.model.Customer;
@@ -14,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLOutput;
@@ -26,12 +28,15 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private  final CustomerMapper customerMapper;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     public Customer add(CustomerDto dto) {
         User user=new User();
         user.setUsername(dto.username());
-user.setPassword(dto.password());
+        user.setRole(Role.CUSTOMER);
+        //Encoding Password
+user.setPassword(passwordEncoder.encode(dto.password()));
 userRepository.save(user);
 
         Customer customer=customerMapper.getMapCustomerDto(dto);

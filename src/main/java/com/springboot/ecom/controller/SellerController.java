@@ -14,7 +14,7 @@ import java.security.Principal;
 @RequestMapping("/api/seller")
 public class SellerController {
     private final SellerService sellerService;
-    @PostMapping("/insertSellerByExecutive/{executiveId}")
+
     /**
      * Executive Add seller detail
      * Body of user credentials{
@@ -27,9 +27,13 @@ public class SellerController {
      * }
      *
      */
-    public void insertSellerByExecutive(@PathVariable long executiveId, @RequestBody SellerDto sellerDto)
-    {
-        sellerService.addSellerByExecutive(executiveId,sellerDto);
+    @PostMapping("/insertSellerByExecutive")
+    public void insertSellerByExecutive(
+            Principal principal,
+            @RequestBody SellerDto sellerDto) {
+
+        String executiveName = principal.getName();
+        sellerService.addSellerByExecutive(executiveName, sellerDto);
     }
     @DeleteMapping("/de-activateSeller")
     public void deActivateSeller(Principal principal){
