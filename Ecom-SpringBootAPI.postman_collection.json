@@ -1,0 +1,327 @@
+{
+  "info": {
+    "_postman_id": "b16c4b86-51b8-4d1d-9950-8f1d18ec8f0f",
+    "name": "Ecom-SpringBootAPI",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51046711",
+    "_collection_link": "https://go.postman.co/collection/51046711-b16c4b86-51b8-4d1d-9950-8f1d18ec8f0f?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Post getProductByCategory",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Successful POST request\", function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+              "});",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/product/get-category/pageable/1?page=0&size=1",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "product",
+            "get-category",
+            "pageable",
+            "1"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "0"
+            },
+            {
+              "key": "size",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:8080/api/executive/get-ByJobTitle",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/executive/get-ByJobTitle?jobTitle=VENDOR_RELATIONS_MANAGER",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "executive",
+            "get-ByJobTitle"
+          ],
+          "query": [
+            {
+              "key": "jobTitle",
+              "value": "VENDOR_RELATIONS_MANAGER"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add-Customer",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Add-Admin",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Add-Seller",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Add-ProductByCustomer",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Add-Executive",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Seller-Add-Product",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "uma@123",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "Mainelectronics",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Samsung Galaxy S25\",\r\n  \"description\": \"Latest Samsung flagship smartphone with 256GB storage\",\r\n  \"price\": 69999.0\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/api/product/add/14/1",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "product",
+            "add",
+            "14",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get-ProductByCategory",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "arjun@123",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "arjun",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/product/get-category/pageable/1?page=0&size=1",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "product",
+            "get-category",
+            "pageable",
+            "1"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "0"
+            },
+            {
+              "key": "size",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get-ProductCount-Seller",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "uma@123",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "Mainelectronics",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/product/getProdutCountBySeller/2",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "product",
+            "getProdutCountBySeller",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetProduct-ByTitle",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/product/get-ByTitle?title=iPhone 15",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "product",
+            "get-ByTitle"
+          ],
+          "query": [
+            {
+              "key": "title",
+              "value": "iPhone 15",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Executive",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Log-In",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Decative",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/seller/de-activateSeller/Mainelectronics",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "seller",
+            "de-activateSeller",
+            "Mainelectronics"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
