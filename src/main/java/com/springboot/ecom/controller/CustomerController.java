@@ -66,7 +66,7 @@ public class CustomerController {
 
     }
     @PutMapping("/update-ById/{id}")
-    public Customer update(@PathVariable long id,  @Valid @RequestBody CustomerUpdateDto customerUpdateDto){
+    public CustomeResDto update(@PathVariable long id,  @Valid @RequestBody CustomerUpdateDto customerUpdateDto){
          return customerService.update(id,customerUpdateDto);
     }
 

@@ -83,11 +83,12 @@ return  customer.stream()
         customerRepository.save(customer);
     }
 
-    public Customer update(long id, @Valid CustomerUpdateDto customerUpdateDto) {
+    public CustomeResDto update(long id, @Valid CustomerUpdateDto customerUpdateDto) {
        Customer customerDB= customerRepository.findById(id)
                 .orElseThrow(()->new ResourseNotFoundException("Customer Id not found"));
        customerDB.setCity(customerUpdateDto.city());
-       return  customerRepository.save(customerDB);
+       customerRepository.save(customerDB);
+       return customerMapper.mapEntityToDto(customerDB);
     }
 
     public CustomeResDto fetchById(long id) {
