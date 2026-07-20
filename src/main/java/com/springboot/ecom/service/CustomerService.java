@@ -56,10 +56,11 @@ return  customer.stream()
 
     }
 
-    public Customer getAllById(long id) {
+    public CustomeResDto getAllById(long id) {
         Customer customer= customerRepository.findById(id)
                 .orElseThrow(()-> new ResourseNotFoundException("Customer Id not found"));
-        return  customer;
+
+        return customerMapper.mapEntityToDto(customer);
 
 
     }

@@ -56,7 +56,7 @@ public class CustomerController {
     }
 
     @GetMapping("/get-oneById/{id}")
-    public  Customer getAllById(@PathVariable long id){
+    public CustomeResDto getAllById(@PathVariable long id){
         return customerService.getAllById(id);
     }
 

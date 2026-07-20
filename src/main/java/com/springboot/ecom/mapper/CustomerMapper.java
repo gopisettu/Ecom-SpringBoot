@@ -14,7 +14,7 @@ public class CustomerMapper {
         return  customer;
 
     }
-    public CustomeResDto mapEntityToDto(Customer customer){
+    public  static CustomeResDto mapEntityToDto(Customer customer){
         CustomeResDto customeResDto=new CustomeResDto(customer.getName(),customer.getCity());
         return customeResDto;
 
